@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>March Madness Economics â A Data Analysis</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Georgia', serif; background: #fafaf7; color: #2c2c2c; line-height: 1.7; padding: 0 20px; }
+  .container { max-width: 860px; margin: 0 auto; padding: 50px 0 80px; }
+  h1 { font-size: 2.8em; font-weight: 700; margin-bottom: 8px; color: #1a1a1a; letter-spacing: -0.5px; }
+  .subtitle { font-size: 1.2em; color: #666; margin-bottom: 12px; font-style: italic; }
+  .intro { font-size: 1.08em; color: #444; margin-bottom: 48px; max-width: 700px; }
+  .section-label { font-size: 0.85em; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #999; margin: 48px 0 16px; }
+  .card-grid { display: grid; gap: 20px; }
+  .card { background: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 28px 28px 24px; text-decoration: none; color: inherit; transition: all 0.2s; display: grid; grid-template-columns: 44px 1fr; gap: 16px; align-items: start; }
+  .card:hover { border-color: #999; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transform: translateY(-2px); }
+  .card-num { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: #2c3e50; color: white; font-weight: 700; font-size: 1.1em; font-family: sans-serif; flex-shrink: 0; }
+  .card-content h2 { font-size: 1.25em; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; }
+  .card-content p { font-size: 0.95em; color: #666; margin: 0; }
+  .card-tag { display: inline-block; font-size: 0.75em; font-weight: 600; padding: 2px 8px; border-radius: 3px; margin-top: 8px; font-family: sans-serif; }
+  .tag-coaching { background: #e8f5e9; color: #2e7d32; }
+  .tag-seeding { background: #e3f2fd; color: #1565c0; }
+  .tag-three { background: #fff3e0; color: #e65100; }
+  .tag-bracket { background: #f3e5f5; color: #7b1fa2; }
+  .footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid #e0e0e0; font-size: 0.88em; color: #999; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>March Madness Economics</h1>
+<p class="subtitle">What 40 years of NCAA tournament data reveals about expert judgment, market efficiency, and the price of a three-pointer</p>
+<p class="intro">This is a series of data analyses that use March Madness as a lens for economic storytelling â expert fallibility, arbitrage correction, variance as strategy, and the gap between insight and implementation. All findings are derived from the Kaggle March Machine Learning Mania dataset covering 1985â2025.</p>
+
+<div class="section-label">Part I â Coaching &amp; Expert Judgment</div>
+
+<div class="card-grid">
+  <a href="coach_experience_analysis.html" class="card">
+    <div class="card-num">1</div>
+    <div class="card-content">
+      <h2>The Coaching Experience Effect</h2>
+      <p>Coaches with 15+ tournament appearances average 2.22 wins vs 0.52 for first-timers. The effect holds after controlling for seed quality â experience isn't just a proxy for having good teams.</p>
+      <span class="card-tag tag-coaching">Coaching</span>
+    </div>
+  </a>
+
+  <a href="2025_coaching_experience.html" class="card">
+    <div class="card-num">2</div>
+    <div class="card-content">
+      <h2>2025 Bracket: The Coaching Map</h2>
+      <p>Mapping this year's 68-team field to coaching experience data. Florida and Duke enter as 1-seeds with thin coaching resumes. Calipari vs. Self as 10 vs. 7 seed pits two 57-win coaches against the bracket.</p>
+      <span class="card-tag tag-coaching">Coaching</span>
+    </div>
+  </a>
+
+  <a href="seeding_expert_fallibility.html" class="card">
+    <div class="card-num">3</div>
+    <div class="card-content">
+      <h2>Seeding &amp; Expert Fallibility</h2>
+      <p>The selection committee's 27% upset rate has been flat for 40 years. The 11-seed anomaly, the 5-vs-12 problem, and conference bias â the committee's "prices" have persistent, measurable errors.</p>
+      <span class="card-tag tag-seeding">Seeding</span>
+    </div>
+  </a>
+
+  <a href="expert_vs_simple.html" class="card">
+    <div class="card-num">4</div>
+    <div class="card-content">
+      <h2>Experts vs. Simple Heuristics</h2>
+      <p>The committee picks winners at 71.4%. A simple win count captures 90% of that predictive power. Only 7 of 193 computer ranking systems beat the committee â and none by much.</p>
+      <span class="card-tag tag-seeding">Seeding</span>
+    </div>
+  </a>
+
+  <a href="coaching_meets_seeding.html" class="card">
+    <div class="card-num">5</div>
+    <div class="card-content">
+      <h2>When Coaching Meets Seeding</h2>
+      <p>Upset rates jump from 26% to 38% when the underdog has a coaching experience edge. At 5+ more appearances, the upset rate hits 44â45% â nearly a coin flip.</p>
+      <span class="card-tag tag-coaching">Coaching</span> <span class="card-tag tag-seeding">Seeding</span>
+    </div>
+  </a>
+</div>
+
+<div class="section-label">Part II â Bracket Strategy</div>
+
+<div class="card-grid">
+  <a href="bracket_simulation.html" class="card">
+    <div class="card-num">6</div>
+    <div class="card-content">
+      <h2>Bracket Pool Simulation</h2>
+      <p>Can coaching experience win your bracket pool? Chalk averages 387 points vs. coaching's 306. The lesson: knowing â  profiting â exponential scoring punishes upset strategies.</p>
+      <span class="card-tag tag-bracket">Strategy</span>
+    </div>
+  </a>
+
+  <a href="r1_coaching_strategy.html" class="card">
+    <div class="card-num">7</div>
+    <div class="card-content">
+      <h2>The Selective Upset Strategy</h2>
+      <p>Use coaching only in Round 1, chalk from there. When limited to high-conviction picks (5+ experience gap), upsets hit at a 52% rate â a slightly loaded coin in a field of chalk pickers.</p>
+      <span class="card-tag tag-bracket">Strategy</span> <span class="card-tag tag-coaching">Coaching</span>
+    </div>
+  </a>
+</div>
+
+<div class="section-label">Part III â The Three-Point Arbitrage</div>
+
+<div class="card-grid">
+  <a href="three_point_economics.html" class="card">
+    <div class="card-num">8</div>
+    <div class="card-content">
+      <h2>The Three-Point Arbitrage</h2>
+      <p>For 20 years, threes were underpriced. In 2025, the expected value inverted for the first time. Volume up 26%, accuracy flat, two-point efficiency rising â a textbook market correction that took two decades.</p>
+      <span class="card-tag tag-three">Three-Pointers</span>
+    </div>
+  </a>
+
+  <a href="rebound_cost_of_threes.html" class="card">
+    <div class="card-num">9</div>
+    <div class="card-content">
+      <h2>The Hidden Cost of the Miss</h2>
+      <p>The standard EV calculation ignores rebound economics. Missed threes produce 20% fewer offensive rebounds than missed twos, swinging the EV gap by 0.049 points per shot against the three.</p>
+      <span class="card-tag tag-three">Three-Pointers</span>
+    </div>
+  </a>
+
+  <a href="three_point_winning.html" class="card">
+    <div class="card-num">10</div>
+    <div class="card-content">
+      <h2>Accuracy, Not Volume</h2>
+      <p>Three-point volume has a +0.023 correlation with winning â zero. Three-point accuracy: +0.446. And three-point defense may matter even more than offense. The market got the right insight but pulled the wrong lever.</p>
+      <span class="card-tag tag-three">Three-Pointers</span>
+    </div>
+  </a>
+</div>
+
+<div class="footer">
+  <p>Data source: Kaggle March Machine Learning Mania (1985â2025). Regular season: ~118,000 games. Tournament: 2,518 games (compact), 1,382 games (detailed box scores). 380 D1 teams, 1,621 coaches, 193 computer ranking systems.</p>
+</div>
+
+</div>
+</body>
+</html>
