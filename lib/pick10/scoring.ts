@@ -52,6 +52,19 @@ export type LiveGameSummary = {
   impactedEntries: LiveGameEntryImpact[];
 };
 
+export type EntryDetailView = EntryLeaderboardRow & {
+  totalEntries: number;
+  tiedEntryCount: number;
+  lastSyncedAt: Date | null;
+  liveDataStatus: LiveGameStatus;
+  liveTeamCount: number;
+  eliminatedTeamCount: number;
+  upcomingTeamCount: number;
+  liveTeams: TeamBreakdown[];
+  aliveTeams: TeamBreakdown[];
+  eliminatedTeams: TeamBreakdown[];
+};
+
 export type LeaderboardSnapshot = {
   entries: EntryLeaderboardRow[];
   completedGames: number;
@@ -189,6 +202,40 @@ function buildLiveGames(entries: EntryLeaderboardRow[]) {
   });
 }
 
+export function buildEntryDetailView(
+  entryId: string,
+  snapshot: LeaderboardSnapshot,
+): EntryDetailView | null {
+  const entry = snapshot.entries.find((currentEntry) => currentEntry.id === entryId);
+
+  if (!entry) {
+    return null;
+  }
+
+  const liveTeams = entry.teams.filter((team) => team.liveGame?.state === "in_progress");
+  const aliveTeams = entry.teams.filter(
+    (team) => team.isAlive && team.liveGame?.state !== "in_progress",
+  );
+  const eliminatedTeams = entry.teams.filter((team) => !team.isAlive);
+  const tiedEntryCount = snapshot.entries.filter(
+    (currentEntry) => currentEntry.totalPoints === entry.totalPoints,
+  ).length;
+
+  return {
+    ...entry,
+    totalEntries: snapshot.entries.length,
+    tiedEntryCount,
+    lastSyncedAt: snapshot.lastSyncedAt,
+    liveDataStatus: snapshot.liveDataStatus,
+    liveTeamCount: liveTeams.length,
+    eliminatedTeamCount: eliminatedTeams.length,
+    upcomingTeamCount: entry.teams.filter((team) => team.liveGame?.state === "scheduled").length,
+    liveTeams,
+    aliveTeams,
+    eliminatedTeams,
+  };
+}
+
 export async function getLeaderboardSnapshot(): Promise<LeaderboardSnapshot> {
   const db = getDb();
 
@@ -306,4 +353,9 @@ export async function getLeaderboardSnapshot(): Promise<LeaderboardSnapshot> {
 export async function getEntryDetail(entryId: string) {
   const snapshot = await getLeaderboardSnapshot();
   return snapshot.entries.find((entry) => entry.id === entryId) ?? null;
+}
+
+export async function getEntryDetailView(entryId: string) {
+  const snapshot = await getLeaderboardSnapshot();
+  return buildEntryDetailView(entryId, snapshot);
 }
