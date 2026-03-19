@@ -39,9 +39,9 @@ export default function SiteNav() {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:px-6">
         <Link
           href="/"
-          className="text-sm font-semibold uppercase tracking-[0.35em] text-nora-black"
+          className="text-xs font-semibold uppercase tracking-[0.22em] text-nora-black md:text-sm md:tracking-[0.28em]"
         >
-          March Madness
+          march madness w/ the boys
         </Link>
 
         <nav className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-white/80 p-1 shadow-sm">

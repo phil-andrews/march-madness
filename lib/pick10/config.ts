@@ -1,5 +1,5 @@
 export const TOURNAMENT_CONFIG = {
-  title: "Pick-10 March Madness Tracker",
+  title: "march madness w/ the boys",
   subtitle: "Seed-times-wins scoring, plus champion and runner-up bonuses.",
   year: 2026,
   scoringStartDate: "20260319",

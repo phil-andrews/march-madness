@@ -1,4 +1,4 @@
-# Pick-10 Tracker
+# march madness w/ the boys
 
 Small-group March Madness tracker for Andy Nelson style Pick-10 scoring:
 

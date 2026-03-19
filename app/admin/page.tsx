@@ -114,7 +114,7 @@ export default async function AdminPage({
         <div className="flex flex-col gap-4 rounded-[2rem] border border-border/70 bg-card/90 p-6 shadow-sm backdrop-blur md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">
-              Pick-10 Admin
+              march madness w/ the boys
             </p>
             <h1 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
               Import picks, sync results, fix mistakes

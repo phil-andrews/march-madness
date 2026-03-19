@@ -1,6 +1,9 @@
 import type { LiveGameState } from "@/lib/pick10/espn";
 
 type TeamPresentationInput = {
+  assignedNumber?: number;
+  name?: string;
+  seed?: number;
   wins: number;
   isAlive: boolean;
   isChampion: boolean;
@@ -60,6 +63,58 @@ export function getTeamBadgeClass(team: TeamPresentationInput) {
   return "border-slate-200 bg-slate-100 text-slate-700";
 }
 
+export function getCompactTeamLabel(team: Pick<TeamPresentationInput, "assignedNumber" | "name">) {
+  return `#${team.assignedNumber ?? "?"} ${team.name ?? "Unknown"}`;
+}
+
+export function getCompactTeamChipClass(team: TeamPresentationInput) {
+  if (team.isChampion) {
+    return "border-amber-300/80 bg-amber-100/80 text-amber-900";
+  }
+
+  if (team.liveGame?.state === "in_progress") {
+    return "border-yellow-300/80 bg-yellow-100/85 text-yellow-900";
+  }
+
+  if (team.isRunnerUp) {
+    return "border-orange-300/80 bg-orange-100/80 text-orange-900";
+  }
+
+  if (!team.isAlive) {
+    return "border-red-200/80 bg-red-50 text-red-800 opacity-60 line-through decoration-red-300";
+  }
+
+  if (team.wins > 0) {
+    return "border-emerald-300/80 bg-emerald-100/75 text-emerald-900";
+  }
+
+  if (team.liveGame?.state === "scheduled") {
+    return "border-slate-300 bg-slate-50 text-slate-700 border-dashed";
+  }
+
+  return "border-border/80 bg-muted/60 text-foreground";
+}
+
+export function getCompactTeamStateToken(team: TeamPresentationInput) {
+  if (team.isChampion) {
+    return "CH";
+  }
+
+  if (team.liveGame?.state === "in_progress") {
+    return "LIVE";
+  }
+
+  if (team.isRunnerUp) {
+    return "RU";
+  }
+
+  if (team.liveGame?.state === "scheduled") {
+    return "UP";
+  }
+
+  return null;
+}
+
 export function getTeamLiveSummary(team: TeamPresentationInput) {
   if (team.liveGame?.state !== "in_progress") {
     return null;
@@ -71,4 +126,21 @@ export function getTeamLiveSummary(team: TeamPresentationInput) {
       : null;
 
   return [scoreText, team.liveGame.detail].filter(Boolean).join(" · ") || "Live";
+}
+
+export function getTeamAssistiveLabel(team: TeamPresentationInput) {
+  const compactLabel = getCompactTeamLabel(team);
+  const seedText = team.seed ? `Seed ${team.seed}. ` : "";
+
+  if (team.liveGame?.state === "in_progress") {
+    const liveSummary = getTeamLiveSummary(team);
+    return `${compactLabel}. ${seedText}Live vs ${team.liveGame.opponentName}. ${liveSummary}.`;
+  }
+
+  if (team.liveGame?.state === "scheduled") {
+    const detailText = team.liveGame.detail ? ` ${team.liveGame.detail}.` : "";
+    return `${compactLabel}. ${seedText}Upcoming vs ${team.liveGame.opponentName}.${detailText}`;
+  }
+
+  return `${compactLabel}. ${seedText}${getTeamStatusLabel(team)}.`;
 }

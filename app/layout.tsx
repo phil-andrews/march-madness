@@ -15,8 +15,8 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Pick-10 Tracker",
-  description: "Live March Madness Pick-10 standings for a small group pool.",
+  title: "march madness w/ the boys",
+  description: "Live March Madness standings w/ the boys.",
 };
 
 export default function RootLayout({

@@ -107,11 +107,19 @@ export function parseRoundFromHeadline(headline: string) {
 }
 
 export type LiveGameState = {
+  gameId: string;
   state: "in_progress" | "scheduled";
   opponentName: string;
   detail: string | null;
   teamScore: number | null;
   opponentScore: number | null;
+};
+
+export type LiveGameStatus = "available" | "unavailable";
+
+export type LiveGameLookup = {
+  status: LiveGameStatus;
+  map: Map<number, LiveGameState>;
 };
 
 function buildLookupRecords(teamRows: TeamLookupRecord[]) {
@@ -212,7 +220,7 @@ export async function fetchTournamentGames(dateKey?: string) {
   return payload.events ?? [];
 }
 
-export async function getLiveGameMap() {
+export async function getLiveGameData(): Promise<LiveGameLookup> {
   const db = getDb();
   const teamRows = await db
     .select({
@@ -257,6 +265,7 @@ export async function getLiveGameMap() {
           null;
 
         liveMap.set(leftTeam.id, {
+          gameId: event.id,
           state: gameState,
           opponentName: rightTeam.name,
           detail,
@@ -265,6 +274,7 @@ export async function getLiveGameMap() {
         });
 
         liveMap.set(rightTeam.id, {
+          gameId: event.id,
           state: gameState,
           opponentName: leftTeam.name,
           detail,
@@ -275,9 +285,16 @@ export async function getLiveGameMap() {
     }
   } catch (error) {
     console.error("Could not fetch live game state from ESPN.", error);
+    return {
+      status: "unavailable",
+      map: new Map<number, LiveGameState>(),
+    };
   }
 
-  return liveMap;
+  return {
+    status: "available",
+    map: liveMap,
+  };
 }
 
 function getDatesForSync(mode: SyncMode, now = new Date()) {

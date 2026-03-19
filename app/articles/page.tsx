@@ -18,7 +18,7 @@ export default function ArticlesPage() {
             className="inline-flex items-center gap-1.5 text-sm text-nora-grey hover:text-nora-black transition-colors"
           >
             <span>&larr;</span>
-            <span>Back to Pick-10 tracker</span>
+            <span>Back to march madness w/ the boys</span>
           </Link>
 
           <h1 className="mt-5 text-5xl font-bold tracking-tight text-nora-black">
