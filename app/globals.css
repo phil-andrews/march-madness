@@ -28,7 +28,7 @@
 
   --font-sans: var(--font-manrope), system-ui, sans-serif;
 
-  --font-serif: var(--font-serif);
+  --font-serif: var(--font-noto-serif), Georgia, serif;
 
   --color-sidebar-ring: var(--sidebar-ring);
 
@@ -105,11 +105,6 @@
   --radius-3xl: calc(var(--radius) * 2.2);
 
   --radius-4xl: calc(var(--radius) * 2.6);
-}
-
-body {
-  background: var(--color-nora-atlas);
-  color: var(--color-nora-black);
 }
 
 :root {
@@ -189,6 +184,6 @@ body {
     @apply bg-background text-foreground;
   }
   html {
-    @apply font-serif;
+    @apply font-sans;
   }
 }

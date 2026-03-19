@@ -63,7 +63,7 @@ export default function ArticleLayout({
         className={`${isHero ? "" : "max-w-[920px] mx-auto"} px-6 pt-4 pb-2`}
       >
         <Link
-          href="/"
+          href="/articles"
           className="inline-flex items-center gap-1.5 text-sm text-nora-grey hover:text-nora-black transition-colors"
         >
           <span>&larr;</span>
@@ -91,7 +91,7 @@ export default function ArticleLayout({
             ))}
           </div>
           <Link
-            href="/"
+            href="/articles"
             className="text-sm text-nora-grey hover:text-nora-black transition-colors"
           >
             &larr; Back to overview

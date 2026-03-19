@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 import { Manrope, Noto_Serif } from "next/font/google";
 import "./globals.css";
+import SiteNav from "@/components/site-nav";
 import { cn } from "@/lib/utils";
 
-const notoSerif = Noto_Serif({subsets:['latin'],variable:'--font-serif'});
+const notoSerif = Noto_Serif({
+  subsets: ["latin"],
+  variable: "--font-noto-serif",
+});
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -11,9 +15,8 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "March Madness Economics",
-  description:
-    "What 40 years of NCAA tournament data reveals about expert judgment, market efficiency, and the price of a three-pointer",
+  title: "Pick-10 Tracker",
+  description: "Live March Madness Pick-10 standings for a small group pool.",
 };
 
 export default function RootLayout({
@@ -24,6 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-serif", notoSerif.variable)}>
       <body className={`${manrope.variable} font-sans antialiased`}>
+        <SiteNav />
         {children}
       </body>
     </html>

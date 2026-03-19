@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pick-10 Tracker
 
-## Getting Started
+Small-group March Madness tracker for Andy Nelson style Pick-10 scoring:
 
-First, run the development server:
+- points = `seed × wins`
+- champion bonus = `+20`
+- runner-up bonus = `+10`
+- First Four wins do not count
+
+The app is built with Next.js App Router, Neon Postgres, Drizzle, and a shadcn preset.
+
+## Local setup
+
+Create `.env.local` with either:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+DATABASE_URL=postgresql://...
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+or the Postgres parts:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+PGHOST=...
+PGDATABASE=...
+PGUSER=...
+PGPASSWORD=...
+PGSSLMODE=require
+PGCHANNELBINDING=require
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Add these for app control:
 
-## Learn More
+```bash
+ADMIN_PASSCODE=your-admin-passcode
+CRON_SECRET=your-cron-secret
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Commands
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm install
+npm run db:migrate
+npm run db:seed
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The local dev server runs on `http://localhost:3004`.
 
-## Deploy on Vercel
+Useful extras:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run test
+npm run build
+npm run db:import -- ./path/to/entries.txt
+npm run db:import-2026
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Import formats
+
+The admin page accepts either:
+
+1. JSON:
+
+```json
+[
+  { "name": "Phil", "picks": [1, 5, 17, 24, 28, 33, 40, 47, 55, 63] }
+]
+```
+
+2. Plain text blocks:
+
+```text
+Phil
+1
+5
+17
+24
+28
+33
+40
+47
+55
+63
+```
+
+## Routes
+
+- `/` leaderboard
+- `/articles` article archive
+- `/entry/[id]` entry detail
+- `/admin` admin import and sync tools
+- `/api/sync` cron/manual sync endpoint guarded by `CRON_SECRET`
+
+## Notes
+
+- `vercel.json` schedules `/api/sync` every 5 minutes.
+- The sync logic uses ESPN's tournament scoreboard endpoint with `groups=100`.
+- The homepage serves the tracker, and the long-form article archive lives at `/articles`.
