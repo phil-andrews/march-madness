@@ -3,7 +3,6 @@ import Pick10SyncFreshness from "@/components/pick10-sync-freshness";
 import { Button } from "@/components/ui/button";
 import { TOURNAMENT_CONFIG } from "@/lib/pick10/config";
 import {
-  getCompactTeamLabel,
   getCompactTeamStateToken,
   getTeamBadgeClass,
   getTeamLiveSummary,
@@ -135,18 +134,14 @@ function EntryPicksTable({
                       "font-medium leading-tight [overflow-wrap:anywhere]",
                     )}
                   >
-                    {getCompactTeamLabel(team)}
+                    #{team.seed} {team.name}
                   </div>
-                  <div className="mt-1 text-xs text-muted-foreground">
-                    Seed {team.seed}
-                    {!hideEliminatedState ? (
-                      <span className="md:hidden">
-                        {" · "}
-                        {statusLabel}
-                        {stateDetail ? ` · ${stateDetail}` : ""}
-                      </span>
-                    ) : null}
-                  </div>
+                  {!hideEliminatedState ? (
+                    <div className="mt-1 text-xs text-muted-foreground md:hidden">
+                      {statusLabel}
+                      {stateDetail ? ` · ${stateDetail}` : ""}
+                    </div>
+                  ) : null}
                 </td>
                 <td className="hidden px-3 py-2.5 align-top md:table-cell">
                   {!hideEliminatedState ? (
