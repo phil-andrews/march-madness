@@ -50,6 +50,11 @@ function validateAssignedNumbers(assignedNumbers: number[]) {
   }
 }
 
+export function normalizeAssignedNumbers(assignedNumbers: number[]) {
+  validateAssignedNumbers(assignedNumbers);
+  return [...assignedNumbers].sort((left, right) => left - right);
+}
+
 function resolveAssignedNumber(
   rawValue: string | number,
   teamLookup: Map<string, TeamReference>,
@@ -81,12 +86,11 @@ function normalizeParsedEntry(
   rawPicks: Array<string | number>,
   teamLookup: Map<string, TeamReference>,
 ) {
-  const assignedNumbers = rawPicks.map((pick) => resolveAssignedNumber(pick, teamLookup));
-  validateAssignedNumbers(assignedNumbers);
-
   return {
     name: name.trim(),
-    assignedNumbers,
+    assignedNumbers: normalizeAssignedNumbers(
+      rawPicks.map((pick) => resolveAssignedNumber(pick, teamLookup)),
+    ),
   };
 }
 
@@ -201,7 +205,7 @@ export async function saveEntry(
   entry: ParsedEntry,
   options: { entryId?: string; notes?: string } = {},
 ) {
-  validateAssignedNumbers(entry.assignedNumbers);
+  const assignedNumbers = normalizeAssignedNumbers(entry.assignedNumbers);
 
   const db = getDb();
   const sql = getNeonSql();
@@ -210,7 +214,7 @@ export async function saveEntry(
     teamReferences.map((teamReference) => [teamReference.assignedNumber, teamReference.id]),
   );
 
-  for (const assignedNumber of entry.assignedNumbers) {
+  for (const assignedNumber of assignedNumbers) {
     if (!teamIdByAssignedNumber.has(assignedNumber)) {
       const fallback = resolveSeedRecord(assignedNumber);
       throw new Error(
@@ -254,7 +258,7 @@ export async function saveEntry(
 
   writes.push(sql`delete from entry_teams where entry_id = ${entryId}`);
 
-  entry.assignedNumbers.forEach((assignedNumber, index) => {
+  assignedNumbers.forEach((assignedNumber, index) => {
     writes.push(
       sql`
         insert into entry_teams (entry_id, team_id, position)

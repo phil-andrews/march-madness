@@ -194,7 +194,8 @@ export default async function AdminPage({
             <h2 className="text-xl font-semibold">Bulk import</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               Paste a JSON array or plain text blocks. Plain text blocks should be one entry per
-              block, with the first line as the name and the next 10 lines as picks.
+              block, with the first line as the name and the next 10 lines as picks. Entries are
+              stored in official Pick-10 order from the lowest assigned number to the highest.
             </p>
 
             <form action={importEntriesAction} className="mt-5 space-y-4">
@@ -214,7 +215,7 @@ export default async function AdminPage({
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
               Use assigned slot numbers, team names, or slot labels. Commas or one-per-line both
-              work.
+              work. Saved entries are normalized into low-to-high assigned-number order.
             </p>
 
             <form action={saveEntryAction} className="mt-5 space-y-4">
@@ -270,8 +271,8 @@ export default async function AdminPage({
             <div>
               <h2 className="text-xl font-semibold">Current entries</h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                Existing entries are listed with their picks in order. Use edit to load one into
-                the form.
+                Existing entries are listed in official Pick-10 order by assigned number. Use edit
+                to load one into the form.
               </p>
             </div>
           </div>

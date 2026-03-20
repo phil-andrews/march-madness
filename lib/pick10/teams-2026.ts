@@ -72,19 +72,21 @@ export const TEAMS_2026: TeamSeedRecord[] = [
   team(40, "Texas A&M", 10, { aliases: ["Texas AM"] }),
   team(41, "South Florida", 11, { aliases: ["USF"] }),
   team(42, "VCU", 11),
-  team(43, "NC State", 11, {
-    isFirstFourSlot: true,
-    firstFourOpponent: "Texas",
-    slotLabel: "Texas/NC State",
-    aliases: ["NC State/Texas", "Texas / NC State", "NC State / Texas"],
+  team(43, "Texas", 11, {
+    aliases: [
+      "Texas Longhorns",
+      "NC State/Texas",
+      "Texas/NC State",
+      "Texas / NC State",
+      "NC State / Texas",
+    ],
   }),
   team(44, "Miami (OH)", 11, {
-    isFirstFourSlot: true,
-    firstFourOpponent: "SMU",
-    slotLabel: "SMU/Miami (OH)",
     aliases: [
+      "SMU/Miami (OH)",
       "SMU/Miami OH",
       "SMU / Miami (OH)",
+      "SMU / Miami OH",
       "Miami OH",
       "Miami (Ohio)",
     ],
@@ -108,20 +110,16 @@ export const TEAMS_2026: TeamSeedRecord[] = [
   team(61, "Long Island", 16, { aliases: ["LIU", "LIU Brooklyn"] }),
   team(62, "Siena", 16),
   team(63, "Howard", 16, {
-    isFirstFourSlot: true,
-    firstFourOpponent: "UMBC",
-    slotLabel: "Howard/UMBC",
-    aliases: ["UMBC/Howard", "Howard / UMBC", "UMBC / Howard"],
+    aliases: ["Howard/UMBC", "Howard/ UMBC", "UMBC/Howard", "Howard / UMBC", "UMBC / Howard"],
   }),
-  team(64, "Prairie View", 16, {
-    isFirstFourSlot: true,
-    firstFourOpponent: "Lehigh",
-    slotLabel: "Prairie View/Lehigh",
+  team(64, "Prairie View A&M", 16, {
     aliases: [
-      "Lehigh/Prairie View",
-      "Prairie View A&M",
+      "Prairie View",
       "Prairie View AM",
+      "Prairie View A&M",
+      "Prairie View/Lehigh",
       "Lehigh / Prairie View",
+      "Lehigh/Prairie View",
     ],
   }),
 ];

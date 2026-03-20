@@ -212,7 +212,7 @@ function LiveTeamRow({ team }: { team: TeamBreakdown }) {
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-700">
-              Pick {team.position}
+              No. {team.assignedNumber}
             </span>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-yellow-300 bg-white px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-yellow-900">
               <span className="h-1.5 w-1.5 rounded-full bg-yellow-500 animate-pulse" aria-hidden />
@@ -220,9 +220,7 @@ function LiveTeamRow({ team }: { team: TeamBreakdown }) {
             </span>
           </div>
 
-          <h3 className="mt-3 text-xl font-semibold tracking-tight text-yellow-950">
-            #{team.assignedNumber} {team.name}
-          </h3>
+          <h3 className="mt-3 text-xl font-semibold tracking-tight text-yellow-950">{team.name}</h3>
 
           <p className="mt-1 text-sm text-yellow-950/80">
             Seed {team.seed} · vs {team.liveGame?.opponentName ?? "Opponent unavailable"}
@@ -270,7 +268,7 @@ function CompactTeamRow({
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-full bg-muted px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Pick {team.position}
+              No. {team.assignedNumber}
             </span>
             <span
               className={`rounded-full border px-2.5 py-1 text-[11px] font-medium ${getTeamBadgeClass(
@@ -288,7 +286,7 @@ function CompactTeamRow({
                 tone === "muted" && "text-slate-700 line-through decoration-red-300",
               )}
             >
-              #{team.assignedNumber} {team.name}
+              {team.name}
             </h3>
             {stateToken ? (
               <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">

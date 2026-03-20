@@ -26,7 +26,7 @@ export const ENTRIES_2026 = [
     name: "Phil",
     team_name: "Barbell My Balls",
     picks: [2, 3, 15, 24, 26, 41, 42, 43, 47, 48],
-    // Duke, Florida, Kansas, Tennessee, Kentucky, South Florida, VCU, NC State (won #43 slot), McNeese, Northern Iowa
+    // Duke, Florida, Kansas, Tennessee, Kentucky, South Florida, VCU, Texas (won #43 slot), McNeese, Northern Iowa
   },
   {
     name: "Phil",
@@ -46,12 +46,12 @@ export const ENTRIES_2026 = [
     name: "Andrew",
     team_name: "The Contrarians", // made up
     picks: [2, 4, 19, 20, 24, 25, 27, 28, 42, 43],
-    // Duke, Michigan, Vanderbilt, Wisconsin, Tennessee, UCLA, Miami, St. Mary's, VCU, NC State (won #43 slot)
+    // Duke, Michigan, Vanderbilt, Wisconsin, Tennessee, UCLA, Miami, St. Mary's, VCU, Texas (won #43 slot)
   },
   {
     name: "Andrew",
     team_name: "Blue Chip Believers", // made up
     picks: [1, 2, 4, 9, 10, 17, 19, 24, 25, 43],
-    // Arizona, Duke, Michigan, Gonzaga, Illinois, St. John's, Vanderbilt, Tennessee, UCLA, NC State (won #43 slot)
+    // Arizona, Duke, Michigan, Gonzaga, Illinois, St. John's, Vanderbilt, Tennessee, UCLA, Texas (won #43 slot)
   },
 ];

@@ -105,7 +105,7 @@ function EntryPicksTable({
         <caption className="sr-only">{entryName} picks</caption>
         <thead className="bg-muted/35 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
           <tr>
-            <th className="w-12 px-3 py-2 text-left font-semibold">Pick</th>
+            <th className="w-16 px-3 py-2 text-left font-semibold">No.</th>
             <th className="px-3 py-2 text-left font-semibold">Team</th>
             <th className="hidden w-[34%] px-3 py-2 text-left font-semibold md:table-cell">
               State
@@ -126,16 +126,13 @@ function EntryPicksTable({
                 className={cn("border-t border-border/60 align-top", getTableRowClass(team))}
               >
                 <td className="px-3 py-2.5 align-top text-xs font-semibold text-muted-foreground">
-                  {team.position}
+                  {team.assignedNumber}
                 </td>
                 <td className="px-3 py-2.5 align-top">
-                  <div
-                    className={cn(
-                      "font-medium leading-tight [overflow-wrap:anywhere]",
-                    )}
-                  >
-                    #{team.seed} {team.name}
+                  <div className={cn("font-medium leading-tight [overflow-wrap:anywhere]")}>
+                    {team.name}
                   </div>
+                  <div className="mt-1 text-xs text-muted-foreground">Seed {team.seed}</div>
                   {!hideEliminatedState ? (
                     <div className="mt-1 text-xs text-muted-foreground md:hidden">
                       {statusLabel}

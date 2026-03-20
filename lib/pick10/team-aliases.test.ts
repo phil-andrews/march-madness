@@ -11,6 +11,9 @@ describe("normalizeTeamName", () => {
 describe("resolveSeedRecord", () => {
   it("resolves first four slot aliases", () => {
     expect(resolveSeedRecord("SMU / Miami (OH)")?.assignedNumber).toBe(44);
+    expect(resolveSeedRecord("NC State/Texas")?.assignedNumber).toBe(43);
+    expect(resolveSeedRecord("Howard/ UMBC")?.assignedNumber).toBe(63);
+    expect(resolveSeedRecord("Lehigh/Prairie View")?.assignedNumber).toBe(64);
   });
 
   it("resolves common school aliases", () => {

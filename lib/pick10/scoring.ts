@@ -352,7 +352,10 @@ export async function getLeaderboardSnapshot(): Promise<LeaderboardSnapshot> {
   const sortedEntries = [...groupedEntries.values()]
     .map((entry) => ({
       ...entry,
-      teams: entry.teams.sort((left, right) => left.position - right.position),
+      teams: entry.teams.sort(
+        (left, right) =>
+          left.assignedNumber - right.assignedNumber || left.position - right.position,
+      ),
     }))
     .sort(compareLeaderboardEntries);
 
