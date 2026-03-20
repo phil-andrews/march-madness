@@ -3,8 +3,8 @@ export const ENTRIES_2026 = [
   {
     name: "Dom",
     team_name: "Dom's Whites",
-    picks: [1, 2, 7, 9, 10, 17, 21, 30, 46, 52],
-    // Arizona, Duke, Purdue, Gonzaga, Illinois, St. John's, BYU, Clemson, High Point, Troy
+    picks: [1, 2, 7, 9, 10, 17, 21, 30, 42, 46],
+    // Arizona, Duke, Purdue, Gonzaga, Illinois, St. John's, BYU, Clemson, VCU, High Point
   },
   {
     name: "Dom",
