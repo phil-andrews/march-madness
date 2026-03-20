@@ -39,8 +39,8 @@ export const ENTRIES_2026 = [
   {
     name: "Andrew",
     team_name: "The Chalk Erasers", // made up
-    picks: [2, 4, 8, 9, 14, 22, 24, 28, 33, 34],
-    // Duke, Michigan, UConn, Gonzaga, Arkansas, Louisville, Tennessee, St. Mary's, TCU, Iowa
+    picks: [2, 4, 8, 10, 14, 22, 24, 28, 33, 34],
+    // Duke, Michigan, UConn, Illinois, Arkansas, Louisville, Tennessee, St. Mary's, TCU, Iowa
   },
   {
     name: "Andrew",
