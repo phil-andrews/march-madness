@@ -1,6 +1,6 @@
 import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
-import { gameResults, getDb, getNeonSql, teams } from "@/lib/db";
+import { gameResults, getDb, getNeonSql, syncStatus, teams } from "@/lib/db";
 import { TOURNAMENT_CONFIG, type SyncMode } from "@/lib/pick10/config";
 import { getAliasesForAssignedNumber, normalizeTeamName } from "@/lib/pick10/team-aliases";
 
@@ -402,6 +402,23 @@ export async function runTournamentSync(
         insertedGames += inserted.length;
       }
     }
+
+    const syncedAt = new Date();
+
+    await db
+      .insert(syncStatus)
+      .values({
+        key: TOURNAMENT_CONFIG.syncStatusKey,
+        lastSuccessfulSyncAt: syncedAt,
+        updatedAt: syncedAt,
+      })
+      .onConflictDoUpdate({
+        target: syncStatus.key,
+        set: {
+          lastSuccessfulSyncAt: syncedAt,
+          updatedAt: syncedAt,
+        },
+      });
 
     if (options.revalidate !== false) {
       revalidatePath("/");

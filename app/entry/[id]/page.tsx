@@ -31,8 +31,8 @@ function formatWinsLeft(count: number) {
   return count === 1 ? "1 win left" : `${count} wins left`;
 }
 
-function formatRank(entry: EntryDetailView) {
-  return entry.tiedEntryCount > 1 ? `Tied #${entry.displayRank}` : `#${entry.displayRank}`;
+function formatRankValue(entry: EntryDetailView) {
+  return `#${entry.displayRank}`;
 }
 
 function formatLiveScore(team: TeamBreakdown) {
@@ -84,29 +84,58 @@ function formatTeamContext(team: TeamBreakdown) {
   return parts.join(" · ");
 }
 
-function SummaryStat({
+function PrimaryStat({
   label,
   value,
-  hint,
-  accent = false,
+  detail,
 }: {
   label: string;
   value: ReactNode;
-  hint?: string;
-  accent?: boolean;
+  detail?: string;
 }) {
   return (
-    <div
-      className={cn(
-        "rounded-[1.1rem] border bg-background/80 p-3 shadow-sm",
-        accent ? "border-yellow-300/70 bg-yellow-50/70" : "border-border/70",
-      )}
-    >
+    <div className="rounded-[1.05rem] border border-border/70 bg-background/88 px-3 py-2.5 shadow-sm">
       <div className="text-[0.68rem] uppercase tracking-[0.24em] text-muted-foreground">
         {label}
       </div>
-      <div className="mt-2 text-lg font-semibold tracking-tight">{value}</div>
-      {hint ? <div className="mt-1 text-xs text-muted-foreground">{hint}</div> : null}
+      <div className="mt-1.5 text-[1.55rem] font-semibold tracking-tight tabular-nums">{value}</div>
+      {detail ? <div className="mt-1 text-xs text-muted-foreground">{detail}</div> : null}
+    </div>
+  );
+}
+
+function SummaryChip({
+  label,
+  value,
+  tone = "default",
+}: {
+  label: string;
+  value: ReactNode;
+  tone?: "default" | "live" | "danger" | "caution";
+}) {
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-medium shadow-sm",
+        tone === "default" && "border-border/70 bg-background/88 text-foreground",
+        tone === "live" && "border-yellow-300/80 bg-yellow-50/85 text-yellow-950",
+        tone === "danger" && "border-red-200/80 bg-red-50/80 text-red-800",
+        tone === "caution" && "border-amber-300/80 bg-amber-50/80 text-amber-950",
+      )}
+    >
+      {tone === "live" ? (
+        <span className="h-1.5 w-1.5 rounded-full bg-yellow-500 animate-pulse" aria-hidden />
+      ) : null}
+      <span className="text-[0.68rem] uppercase tracking-[0.18em] opacity-70">{label}</span>
+      <span className="tabular-nums">{value}</span>
+    </span>
+  );
+}
+
+function SummaryChipGroup({ children }: { children: ReactNode }) {
+  return (
+    <div className="mt-3 flex flex-wrap gap-2">
+      {children}
     </div>
   );
 }
@@ -307,6 +336,7 @@ export default async function EntryPage({
     entry.upcomingTeamCount > 0
       ? `Remaining upside, including ${formatCount(entry.upcomingTeamCount, "upcoming game")}.`
       : "Picks that can still add points.";
+  const eliminatedTeamCount = entry.eliminatedTeams.length;
 
   return (
     <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(34,197,94,0.14),_transparent_30%),radial-gradient(circle_at_top_right,_rgba(249,115,22,0.14),_transparent_25%),linear-gradient(to_bottom,_#fcfcfb,_#f3f4ef)] px-4 py-6 md:px-6 md:py-8">
@@ -346,13 +376,6 @@ export default async function EntryPage({
               {entry.notes ? (
                 <p className="mt-2 text-sm text-muted-foreground">Owner: {entry.notes}</p>
               ) : null}
-
-              {entry.tiedEntryCount > 1 ? (
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Shared rank on current points with{" "}
-                  {formatCount(entry.tiedEntryCount - 1, "other entry", "other entries")}.
-                </p>
-              ) : null}
             </div>
 
             <Button asChild variant="outline" size="sm">
@@ -360,35 +383,47 @@ export default async function EntryPage({
             </Button>
           </div>
 
-          <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
-            <SummaryStat label="Rank" value={formatRank(entry)} hint={`of ${entry.totalEntries}`} />
-            <SummaryStat label="Score" value={entry.totalPoints} hint="current points" />
-            <SummaryStat label="Max" value={entry.projectedMax} hint="projected ceiling" />
-            <SummaryStat
+          <div className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-4">
+            <PrimaryStat
+              label="Rank"
+              value={formatRankValue(entry)}
+              detail={`of ${entry.totalEntries} entries`}
+            />
+            <PrimaryStat label="Score" value={entry.totalPoints} detail="current points" />
+            <PrimaryStat label="Max" value={entry.projectedMax} detail="projected ceiling" />
+            <PrimaryStat
               label="Alive"
               value={entry.aliveTeamCount}
-              hint={`of ${TOURNAMENT_CONFIG.entrySize} picks`}
+              detail={`of ${TOURNAMENT_CONFIG.entrySize} picks`}
             />
+          </div>
+
+          <SummaryChipGroup>
+            {entry.tiedEntryCount > 1 ? (
+              <SummaryChip
+                label="Tied"
+                value={formatCount(entry.tiedEntryCount - 1, "other", "others")}
+              />
+            ) : null}
             {entry.liveTeamCount > 0 ? (
-              <SummaryStat label="Live" value={entry.liveTeamCount} hint="in progress" accent />
+              <SummaryChip label="Live" value={entry.liveTeamCount} tone="live" />
             ) : null}
             {entry.upcomingTeamCount > 0 ? (
-              <SummaryStat label="Upcoming" value={entry.upcomingTeamCount} hint="scheduled next" />
+              <SummaryChip label="Upcoming" value={entry.upcomingTeamCount} />
             ) : null}
-            <SummaryStat
+            {eliminatedTeamCount > 0 ? (
+              <SummaryChip label="Out" value={eliminatedTeamCount} tone="danger" />
+            ) : null}
+            <SummaryChip
               label="Synced"
               value={
                 <Pick10SyncFreshness
                   value={entry.lastSyncedAt ? entry.lastSyncedAt.toISOString() : null}
                 />
               }
-              hint={
-                entry.liveDataStatus === "unavailable"
-                  ? "latest results only"
-                  : "relative to latest sync"
-              }
+              tone={entry.liveDataStatus === "unavailable" ? "caution" : "default"}
             />
-          </div>
+          </SummaryChipGroup>
         </section>
 
         {entry.liveDataStatus === "unavailable" ? (

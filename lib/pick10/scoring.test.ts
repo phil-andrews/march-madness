@@ -5,6 +5,7 @@ import {
   buildEntryDetailView,
   calcScore,
   compareLeaderboardEntries,
+  getSnapshotLastSyncedAt,
   getRemainingPossibleWins,
   matchesResolvedTeam,
 } from "./scoring";
@@ -26,6 +27,27 @@ describe("getRemainingPossibleWins", () => {
 
   it("caps the remaining wins at the tournament maximum", () => {
     expect(getRemainingPossibleWins(2, true)).toBe(4);
+  });
+});
+
+describe("getSnapshotLastSyncedAt", () => {
+  it("prefers the explicit sync status timestamp", () => {
+    const lastSuccessfulSyncAt = new Date("2026-03-19T18:45:00.000Z");
+
+    expect(
+      getSnapshotLastSyncedAt(lastSuccessfulSyncAt, [
+        { fetchedAt: new Date("2026-03-19T17:30:00.000Z") },
+      ]),
+    ).toEqual(lastSuccessfulSyncAt);
+  });
+
+  it("falls back to the latest fetched result timestamp", () => {
+    expect(
+      getSnapshotLastSyncedAt(null, [
+        { fetchedAt: new Date("2026-03-19T17:30:00.000Z") },
+        { fetchedAt: new Date("2026-03-19T18:45:00.000Z") },
+      ]),
+    ).toEqual(new Date("2026-03-19T18:45:00.000Z"));
   });
 });
 

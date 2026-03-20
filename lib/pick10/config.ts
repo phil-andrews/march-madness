@@ -5,6 +5,7 @@ export const TOURNAMENT_CONFIG = {
   scoringStartDate: "20260319",
   syncStartDate: "20260317",
   syncEndDate: "20260407",
+  syncStatusKey: "tournament_results",
   maxTournamentWins: 6,
   entrySize: 10,
   syncLookbackDays: 1,

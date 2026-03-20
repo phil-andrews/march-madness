@@ -104,6 +104,13 @@ export const gameResults = pgTable("game_results", {
   fetchedAt: timestamp("fetched_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+export const syncStatus = pgTable("sync_status", {
+  key: text().primaryKey(),
+  lastSuccessfulSyncAt: timestamp("last_successful_sync_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 let cachedSql: ReturnType<typeof neon> | undefined;
 let cachedDb: ReturnType<typeof drizzle> | undefined;
 
@@ -120,6 +127,7 @@ export function getDb() {
       entries,
       entryTeams,
       gameResults,
+      syncStatus,
     },
   });
 
@@ -130,3 +138,4 @@ export type TeamRow = typeof teams.$inferSelect;
 export type EntryRow = typeof entries.$inferSelect;
 export type EntryTeamRow = typeof entryTeams.$inferSelect;
 export type GameResultRow = typeof gameResults.$inferSelect;
+export type SyncStatusRow = typeof syncStatus.$inferSelect;

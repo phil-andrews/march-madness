@@ -1,5 +1,5 @@
 import { asc, eq } from "drizzle-orm";
-import { entries, entryTeams, gameResults, getDb, teams } from "@/lib/db";
+import { entries, entryTeams, gameResults, getDb, syncStatus, teams } from "@/lib/db";
 import { TOURNAMENT_CONFIG } from "@/lib/pick10/config";
 import {
   getLiveGameData,
@@ -93,6 +93,24 @@ export function getRemainingPossibleWins(wins: number, isAlive: boolean) {
 
 export function matchesResolvedTeam(teamId: string | null, resolvedTeamId: string | null) {
   return teamId !== null && resolvedTeamId !== null && teamId === resolvedTeamId;
+}
+
+export function getSnapshotLastSyncedAt(
+  lastSuccessfulSyncAt: Date | null,
+  results: Array<Pick<typeof gameResults.$inferSelect, "fetchedAt">>,
+) {
+  if (lastSuccessfulSyncAt) {
+    return lastSuccessfulSyncAt;
+  }
+
+  if (results.length === 0) {
+    return null;
+  }
+
+  return results.reduce<Date>(
+    (latest, result) => (result.fetchedAt > latest ? result.fetchedAt : latest),
+    results[0].fetchedAt,
+  );
 }
 
 export function compareLeaderboardEntries(
@@ -266,6 +284,13 @@ export async function getLeaderboardSnapshot(): Promise<LeaderboardSnapshot> {
     .orderBy(asc(entries.createdAt), asc(entries.name), asc(entryTeams.position));
 
   const results = await db.select().from(gameResults).orderBy(asc(gameResults.playedAt));
+  const [syncStatusRow] = await db
+    .select({
+      lastSuccessfulSyncAt: syncStatus.lastSuccessfulSyncAt,
+    })
+    .from(syncStatus)
+    .where(eq(syncStatus.key, TOURNAMENT_CONFIG.syncStatusKey))
+    .limit(1);
   const liveGameData = await getLiveGameData();
   const resultMaps = buildResultMaps(results);
   const groupedEntries = new Map<string, EntryLeaderboardRow>();
@@ -337,13 +362,7 @@ export async function getLeaderboardSnapshot(): Promise<LeaderboardSnapshot> {
   return {
     entries: rankedEntries,
     completedGames: results.length,
-    lastSyncedAt:
-      results.length > 0
-        ? results.reduce<Date>(
-            (latest, result) => (result.fetchedAt > latest ? result.fetchedAt : latest),
-            results[0].fetchedAt,
-          )
-        : null,
+    lastSyncedAt: getSnapshotLastSyncedAt(syncStatusRow?.lastSuccessfulSyncAt ?? null, results),
     teamsSeeded: teamRows.length,
     liveGames,
     liveDataStatus: liveGameData.status,
